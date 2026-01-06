@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil | Garage{% endblock %}
+
+{% block body %}
+<div class="block mb-20">
+    <h1 class="mb-20">Bienvenue dans notre garage</h1>
+    <p class="mb-20">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+    </p>
+    <p>
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+        dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
+    </p>
+</div>
+
+<div class="d-flex flex-row-wrap justify-content-between">
+    <div class="block block-shadow m-10 flex-fill">
+        <h3 class="mb-10">
+            <i class="fa-solid fa-car mr-5"></i>
+            Véhicules contrôlés
+        </h3>
+        <p>
+            Tous nos véhicules sont rigoureusement inspectés avant la mise en vente afin
+            de garantir qualité et sécurité.
+        </p>
+    </div>
+    <div class="block block-shadow m-10 flex-fill">
+        <h3 class="mb-10">
+            <i class="fa-solid fa-euro-sign mr-5"></i>
+            Prix transparents
+        </h3>
+        <p>
+            Aucun frais caché. Les prix affichés sont clairs et justifiés selon l’état
+            du véhicule.
+        </p>
+    </div>
+    <div class="block block-shadow m-10 flex-fill">
+        <h3 class="mb-10">
+            <i class="fa-solid fa-shield-halved mr-5"></i>
+            Garantie incluse
+        </h3>
+        <p>
+            Tous nos véhicules bénéficient d’une garantie pour vous offrir une tranquillité
+            d’esprit maximale.
+        </p>
+    </div>
+</div>
+
+<div class="separator"></div>
+<div class="block text-small">
+    <p>
+        📍 Garage situé à Paris – 📞 01 23 45 67 89 – ✉️ contact@garage.fr
+    </p>
+</div>
+
+{% endblock %}

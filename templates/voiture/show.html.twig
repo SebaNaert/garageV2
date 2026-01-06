@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ voiture.marque }} {{ voiture.modele }} | Garage{% endblock %}
+
+{% block body %}
+
+<div class="block mb-20">
+    <h1 class="mb-20">{{ voiture.marque }} {{ voiture.modele }}</h1>
+
+    {# Image principale / couverture #}
+    {% if voiture.imageCouverture %}
+        <img src="{{ voiture.imageCouverture }}"
+             alt="{{ voiture.marque }} {{ voiture.modele }}"
+             style="width:100%; max-height:400px; object-fit:cover; border-radius: var(--border-radius); margin-bottom:20px;">
+    {% else %}
+        <div style="width:100%; height:400px; background-color: var(--gray-light);
+                    display:flex; align-items:center; justify-content:center; border-radius: var(--border-radius); margin-bottom:20px;">
+            <span>Aucune image</span>
+        </div>
+    {% endif %}
+
+    {# Infos principales #}
+    <div class="d-flex flex-row-wrap justify-content-between mb-20">
+
+        <div class="block m-10 flex-fill">
+            <p><strong>Marque :</strong> {{ voiture.marque }}</p>
+            <p><strong>Modèle :</strong> {{ voiture.modele }}</p>
+            <p><strong>Kilométrage :</strong> {{ voiture.kilometrage }} km</p>
+            <p><strong>Prix :</strong> {{ voiture.prix | number_format(0, '.', ' ') }} €</p>
+            <p><strong>Nombre de propriétaires :</strong> {{ voiture.nombreProprietaires }}</p>
+            <p><strong>Cylindrée :</strong> {{ voiture.cylindree }}</p>
+        </div>
+
+        <div class="block m-10 flex-fill">
+            <p><strong>Puissance :</strong> {{ voiture.puissance }} ch</p>
+            <p><strong>Carburant :</strong> {{ voiture.carburant }}</p>
+            <p><strong>Année de mise en circulation :</strong> {{ voiture.anneeMiseEnCirculation }}</p>
+            <p><strong>Transmission :</strong> {{ voiture.transmission }}</p>
+        </div>
+
+    </div>
+
+    {# Description #}
+    {% if voiture.description %}
+        <div class="block mb-20">
+            <h3>Description</h3>
+            <p>{{ voiture.description }}</p>
+        </div>
+    {% endif %}
+
+    {# Options #}
+    {% if voiture.options %}
+        <div class="block mb-20">
+            <h3>Options</h3>
+            <p>{{ voiture.options }}</p>
+        </div>
+    {% endif %}
+
+    {# Galerie d'images #}
+    {% if voiture.voitureImages|length > 0 %}
+        <div class="block mb-20">
+            <h3>Galerie</h3>
+            <div class="d-flex flex-row-wrap">
+                {% for image in voiture.voitureImages %}
+                    <img src="{{ image.imageName }}"
+                         alt="Galerie {{ voiture.marque }} {{ voiture.modele }} - image {{ loop.index }}"
+                         style="width:150px; height:100px; object-fit:cover; margin:5px; border-radius: var(--border-radius);">
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+</div>
+
+<a href="{{ path('voiture_index') }}" class="btn btn-primary">Retour au showroom</a>
+
+{% endblock %}
