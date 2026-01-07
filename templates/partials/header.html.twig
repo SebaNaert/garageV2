@@ -7,10 +7,14 @@
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" name="#" id="#">
         </div>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <a href="{{ path('logout')}}">Déconnexion</a>
+        {% else %}
         <div>
-            <button class="btn btn-primary mr-5">inscription</button>
-            <button class="btn btn-primary-stroke">Connexion</button>
+            <a href="{{ path('login')}}" class="btn btn-primary-stroke">Connexion</a>
         </div>
+        {% endif %}
+        
     </div>
 </header>
 

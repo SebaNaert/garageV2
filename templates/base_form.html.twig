@@ -1,0 +1,38 @@
+{% use "form_div_layout.html.twig" %}
+
+{%- block form_row -%}
+  {%- set widget_attr = widget_attr is defined ? widget_attr : {} -%}
+  {%- if help is not empty -%}
+    {%- set widget_attr = widget_attr|merge({attr: {'aria-describedby': id ~ "_help"}}) -%}
+  {%- endif -%}
+
+  {# S'assurer que la clé 'attr' existe avant de merger les styles #}
+  {%- if widget_attr.attr is not defined -%}
+    {%- set widget_attr = widget_attr|merge({attr: {}}) -%}
+  {%- endif -%}
+
+  {# Ajouter nos styles de saisie #}
+  {%- set widget_attr = widget_attr|merge({
+        attr: widget_attr.attr|merge({
+            style: "background-color: #fff; color: #000; border: 1px solid #ccc; padding: 8px; border-radius: 5px;"
+        })
+    }) -%}
+
+  {% set row_attr = row_attr|merge({ class: row_attr.class|default('') ~ ' form-row' }) %}
+  <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+    {{- form_label(form) -}}
+    {{- form_widget(form, widget_attr) -}}
+    {{- form_errors(form) -}}
+    {{- form_help(form) -}}
+  </div>
+{%- endblock form_row -%}
+
+{%- block form_errors -%}
+  {%- if errors|length > 0 -%}
+  <ul class="form-errors">
+    {%- for error in errors -%}
+      <li>{{ error.message }}</li>
+    {%- endfor -%}
+  </ul>
+  {%- endif -%}
+{%- endblock form_errors -%}

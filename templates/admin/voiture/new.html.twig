@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter une voiture{% endblock %}
+
+{% block body %}
+<h1>Ajouter une voiture</h1>
+
+{# ⚠️ Important : enctype pour pouvoir uploader des fichiers #}
+{{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+
+{# Champs de base #}
+{{ form_row(form.marque) }}
+{{ form_row(form.modele) }}
+{{ form_row(form.kilometrage) }}
+{{ form_row(form.prix) }}
+{{ form_row(form.nombreProprietaires) }}
+{{ form_row(form.cylindree) }}
+{{ form_row(form.puissance) }}
+{{ form_row(form.carburant) }}
+{{ form_row(form.anneeMiseEnCirculation) }}
+{{ form_row(form.transmission) }}
+{{ form_row(form.description) }}
+{{ form_row(form.options) }}
+
+{# Image de couverture #}
+{{ form_row(form.imageCouverture) }}
+
+{# Galerie d'images avec CollectionType et JS dynamique #}
+<div id="voiture_voitureImages" data-prototype="{{ form_widget(form.voitureImages.vars.prototype)|e('html_attr') }}">
+    {% for imageForm in form.voitureImages %}
+        <div class="form-group">
+            {{ form_row(imageForm) }}
+            <button type="button" class="btn btn-danger remove-image">Supprimer</button>
+        </div>
+    {% endfor %}
+</div>
+<input type="hidden" id="widgets-counter" value="{{ form.voitureImages|length }}">
+
+<button type="button" id="add-image" class="btn btn-secondary mb-3">Ajouter une image</button>
+
+<button class="btn btn-primary mt-3">Ajouter la voiture</button>
+
+{{ form_end(form) }}
+
+{# JS pour ajouter dynamiquement des champs images #}
+<script>
+const addImageBtn = document.querySelector('#add-image');
+const container = document.querySelector('#voiture_voitureImages');
+let index = parseInt(document.querySelector('#widgets-counter').value);
+
+// Ajouter un nouveau champ image
+addImageBtn.addEventListener('click', () => {
+    const prototype = container.dataset.prototype;
+    const newForm = prototype.replace(/__name__/g, index);
+
+    const div = document.createElement('div');
+    div.classList.add('form-group');
+    div.innerHTML = newForm + '<button type="button" class="btn btn-danger remove-image">Supprimer</button>';
+    container.appendChild(div);
+
+    // Ajouter l'événement pour supprimer ce champ
+    div.querySelector('.remove-image').addEventListener('click', () => {
+        div.remove();
+    });
+
+    index++;
+});
+
+// Supprimer les champs existants
+document.querySelectorAll('.remove-image').forEach(btn => {
+    btn.addEventListener('click', () => {
+        btn.closest('.form-group').remove();
+    });
+});
+</script>
+{% endblock %}

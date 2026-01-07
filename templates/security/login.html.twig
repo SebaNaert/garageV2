@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion administrateur{% endblock %}
+
+{% block body %}
+<div class="block" style="max-width:400px; margin:auto;">
+    <h1 class="mb-20">Connexion admin</h1>
+
+    {% if error %}
+        <div class="form-errors mb-10">
+            Identifiants incorrects
+        </div>
+    {% endif %}
+
+    <form method="post">
+        <div class="form-row">
+            <label>Email</label>
+            <input type="email" name="email" value="{{ last_username }}" required autofocus>
+        </div>
+
+        <div class="form-row">
+            <label>Mot de passe</label>
+            <input type="password" name="password" required>
+        </div>
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+        <button class="btn btn-primary">Se connecter</button>
+    </form>
+</div>
+{% endblock %}

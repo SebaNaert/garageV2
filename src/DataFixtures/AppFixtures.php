@@ -2,16 +2,32 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\User;
 use App\Entity\Voiture;
 use App\Entity\VoitureImage;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
+    public function __construct(private UserPasswordHasherInterface $passwordHasher)
+    {}
     public function load(ObjectManager $manager): void
     {
+        // Crée un admin
+        $admin = new User();
+        $admin->setEmail('admin@garage.com');
+        $admin->setRoles(['ROLE_ADMIN']);
+        $admin->setFirstName('Admin');
+        $admin->setLastName('Garage');
+
+        $admin->setPassword(
+            $this->passwordHasher->hashPassword($admin, 'password')
+        );
+
+        $manager->persist($admin);
         $faker = Factory::create('fr_FR');
 
         for ($i = 0; $i < 12; $i++) {

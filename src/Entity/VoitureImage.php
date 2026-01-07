@@ -16,8 +16,15 @@ class VoitureImage
     #[ORM\Column(length: 255)]
     private ?string $imageName = null;
 
+    // Nouvelle propriété
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $caption = null;
+
     #[ORM\ManyToOne(inversedBy: 'voitureImages')]
+    #[ORM\JoinColumn(nullable: false)] // conserve la relation existante
     private ?Voiture $voiture = null;
+
+    /* ================== GETTERS / SETTERS ================== */
 
     public function getId(): ?int
     {
@@ -32,7 +39,17 @@ class VoitureImage
     public function setImageName(string $imageName): static
     {
         $this->imageName = $imageName;
+        return $this;
+    }
 
+    public function getCaption(): ?string
+    {
+        return $this->caption;
+    }
+
+    public function setCaption(?string $caption): static
+    {
+        $this->caption = $caption;
         return $this;
     }
 
@@ -44,7 +61,6 @@ class VoitureImage
     public function setVoiture(?Voiture $voiture): static
     {
         $this->voiture = $voiture;
-
         return $this;
     }
 }
