@@ -7,11 +7,17 @@
 <div class="block mb-20">
     <h1 class="mb-20">{{ voiture.marque }} {{ voiture.modele }}</h1>
 
-    {# Image principale / couverture #}
+    {# IMAGE PRINCIPALE / COUVERTURE #}
     {% if voiture.imageCouverture %}
-        <img src="{{ voiture.imageCouverture }}"
-             alt="{{ voiture.marque }} {{ voiture.modele }}"
-             style="width:100%; max-height:400px; object-fit:cover; border-radius: var(--border-radius); margin-bottom:20px;">
+        {% if voiture.imageCouverture starts with 'http' %}
+            <img src="{{ voiture.imageCouverture }}"
+                 alt="{{ voiture.marque }} {{ voiture.modele }}"
+                 style="width:100%; max-height:400px; object-fit:cover; border-radius: var(--border-radius); margin-bottom:20px;">
+        {% else %}
+            <img src="{{ asset('uploads/voitures/' ~ voiture.imageCouverture) }}"
+                 alt="{{ voiture.marque }} {{ voiture.modele }}"
+                 style="width:100%; max-height:400px; object-fit:cover; border-radius: var(--border-radius); margin-bottom:20px;">
+        {% endif %}
     {% else %}
         <div style="width:100%; height:400px; background-color: var(--gray-light);
                     display:flex; align-items:center; justify-content:center; border-radius: var(--border-radius); margin-bottom:20px;">
@@ -19,7 +25,7 @@
         </div>
     {% endif %}
 
-    {# Infos principales #}
+    {# INFOS PRINCIPALES #}
     <div class="d-flex flex-row-wrap justify-content-between mb-20">
 
         <div class="block m-10 flex-fill">
@@ -40,7 +46,7 @@
 
     </div>
 
-    {# Description #}
+    {# DESCRIPTION #}
     {% if voiture.description %}
         <div class="block mb-20">
             <h3>Description</h3>
@@ -48,7 +54,7 @@
         </div>
     {% endif %}
 
-    {# Options #}
+    {# OPTIONS #}
     {% if voiture.options %}
         <div class="block mb-20">
             <h3>Options</h3>
@@ -56,15 +62,21 @@
         </div>
     {% endif %}
 
-    {# Galerie d'images #}
+    {# GALERIE D'IMAGES #}
     {% if voiture.voitureImages|length > 0 %}
         <div class="block mb-20">
             <h3>Galerie</h3>
             <div class="d-flex flex-row-wrap">
                 {% for image in voiture.voitureImages %}
-                    <img src="{{ image.imageName }}"
-                         alt="Galerie {{ voiture.marque }} {{ voiture.modele }} - image {{ loop.index }}"
-                         style="width:150px; height:100px; object-fit:cover; margin:5px; border-radius: var(--border-radius);">
+                    {% if image.imageName starts with 'http' %}
+                        <img src="{{ image.imageName }}"
+                             alt="{{ image.caption ?: 'Galerie ' ~ voiture.marque ~ ' ' ~ voiture.modele ~ ' - image ' ~ loop.index }}"
+                             style="width:150px; height:100px; object-fit:cover; margin:5px; border-radius: var(--border-radius);">
+                    {% else %}
+                        <img src="{{ asset('uploads/voitures/' ~ image.imageName) }}"
+                             alt="{{ image.caption ?: 'Galerie ' ~ voiture.marque ~ ' ' ~ voiture.modele ~ ' - image ' ~ loop.index }}"
+                             style="width:150px; height:100px; object-fit:cover; margin:5px; border-radius: var(--border-radius);">
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>

@@ -70,7 +70,7 @@ class Voiture
     /**
      * @var Collection<int, VoitureImage>
      */
-    #[ORM\OneToMany(targetEntity: VoitureImage::class, mappedBy: 'voiture', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: VoitureImage::class, mappedBy: 'voiture', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $voitureImages;
 
     public function __construct()

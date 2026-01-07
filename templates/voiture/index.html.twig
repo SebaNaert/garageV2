@@ -13,13 +13,22 @@
 
     {% for voiture in voitures %}
         <div class="block block-shadow m-10" style="width: 300px;">
-            {# Image de couverture #}
+
+            {# IMAGE DE COUVERTURE #}
             {% if voiture.imageCouverture %}
-                <img
-                    src="{{ voiture.imageCouverture }}"
-                    alt="{{ voiture.marque }} {{ voiture.modele }}"
-                    style="width:100%; border-radius: var(--border-radius); margin-bottom:10px;"
-                >
+                {% if voiture.imageCouverture starts with 'http' %}
+                    <img
+                        src="{{ voiture.imageCouverture }}"
+                        alt="{{ voiture.marque }} {{ voiture.modele }}"
+                        style="width:100%; border-radius: var(--border-radius); margin-bottom:10px;"
+                    >
+                {% else %}
+                    <img
+                        src="{{ asset('uploads/voitures/' ~ voiture.imageCouverture) }}"
+                        alt="{{ voiture.marque }} {{ voiture.modele }}"
+                        style="width:100%; border-radius: var(--border-radius); margin-bottom:10px;"
+                    >
+                {% endif %}
             {% else %}
                 <div
                     style="width:100%; height:180px; background-color: var(--gray-light);
@@ -29,14 +38,15 @@
                 </div>
             {% endif %}
 
-            <h3 class="mb-5"><small>Marque :{{ voiture.marque }}</small></h3>
-            <h3 class="mb-5"> <small>Modele : {{ voiture.modele }}</small></h3>
+            <h3 class="mb-5"><small>Marque : {{ voiture.marque }}</small></h3>
+            <h3 class="mb-5"><small>Modèle : {{ voiture.modele }}</small></h3>
+
             <p class="mb-20">
                 <i class="fa-solid fa-road mr-5"></i> {{ voiture.kilometrage }} km<br>
                 <i class="fa-solid fa-euro-sign mr-5"></i>
                 {{ voiture.prix | number_format(0, '.', ' ') }} €
             </p>
-            {#  #}
+
             <a href="{{ path('voiture_show', {'id': voiture.id}) }}"
                class="btn btn-primary btn-small">
                 Voir les détails

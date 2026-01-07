@@ -21,7 +21,7 @@ class VoitureImage
     private ?string $caption = null;
 
     #[ORM\ManyToOne(inversedBy: 'voitureImages')]
-    #[ORM\JoinColumn(nullable: false)] // conserve la relation existante
+    #[ORM\JoinColumn(nullable: false)]
     private ?Voiture $voiture = null;
 
     /* ================== GETTERS / SETTERS ================== */
