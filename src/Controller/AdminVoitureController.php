@@ -47,26 +47,30 @@ final class AdminVoitureController extends AbstractController
             }
 
             // --- GALERIE D'IMAGES ---
-            foreach ($voiture->getVoitureImages() as $image) {
-                $imageFile = $image->getImageName();
-                if ($imageFile instanceof \Symfony\Component\HttpFoundation\File\UploadedFile) {
-                    $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                    $safeFilename = $slugger->slug($originalFilename);
-                    $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+            foreach ($form->get('voitureImages') as $imageForm) {
+            /** @var UploadedFile|null $imageFile */
+            $imageFile = $imageForm->get('imageName')->getData(); // <-- récupérer depuis le formulaire
 
-                    try {
-                        $imageFile->move(
-                            $this->getParameter('voitures_images_directory'),
-                            $newFilename
-                        );
-                    } catch (FileException $e) {
-                        $this->addFlash('danger', 'Erreur lors de l\'upload de l\'une des images de la galerie.');
-                        return $this->redirectToRoute('admin_voiture_new');
-                    }
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
 
-                    $image->setImageName($newFilename);
-                    $image->setVoiture($voiture); // relation inverse
+                try {
+                    $imageFile->move(
+                        $this->getParameter('voitures_images_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    $this->addFlash('danger', 'Erreur lors de l\'upload de l\'une des images de la galerie.');
+                    return $this->redirectToRoute('admin_voiture_new');
                 }
+
+                // Récupère l'entité VoitureImage liée au formulaire
+                $imageEntity = $imageForm->getData();
+                $imageEntity->setImageName($newFilename);
+                $imageEntity->setVoiture($voiture); // relation inverse
+            }
             }
 
             $em->persist($voiture); // cascade persist gère aussi la galerie

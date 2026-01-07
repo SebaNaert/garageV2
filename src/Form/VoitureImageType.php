@@ -18,7 +18,7 @@ class VoitureImageType extends AbstractType
         $builder
             ->add('imageName', FileType::class, [
                 'label' => 'Image',
-                'mapped' => true,
+                'mapped' => false,
                 'required' => true,
                 'constraints' => [
                     new File([
