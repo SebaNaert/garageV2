@@ -6,6 +6,7 @@ use App\Repository\VoitureRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: VoitureRepository::class)]
 class Voiture
@@ -15,55 +16,64 @@ class Voiture
     #[ORM\Column]
     private ?int $id = null;
 
-    // Marque du véhicule (ex : BMW)
     #[ORM\Column(length: 100)]
-    private string $marque;
+    #[Assert\NotBlank(message: "La marque est obligatoire")]
+    #[Assert\Length(min:2, max:100, minMessage:"La marque doit faire au moins {{ limit }} caractères", maxMessage:"La marque ne peut pas dépasser {{ limit }} caractères")]
+    private ?string $marque = null;
 
-    // Modèle du véhicule (ex : Série 3)
     #[ORM\Column(length: 100)]
-    private string $modele;
+    #[Assert\NotBlank(message: "Le modèle est obligatoire")]
+    #[Assert\Length(min:1, max:100, minMessage:"Le modèle doit faire au moins {{ limit }} caractère", maxMessage:"Le modèle ne peut pas dépasser {{ limit }} caractères")]
+    private ?string $modele = null;
 
-    // Kilométrage
     #[ORM\Column(type: 'integer')]
-    private int $kilometrage;
+    #[Assert\NotNull(message:"Le kilométrage est obligatoire")]
+    #[Assert\PositiveOrZero(message:"Le kilométrage doit être positif ou nul")]
+    private ?int $kilometrage = null;
 
-    // Prix en euros
     #[ORM\Column(type: 'float')]
-    private float $prix;
+    #[Assert\NotNull(message:"Le prix est obligatoire")]
+    #[Assert\Positive(message:"Le prix doit être positif")]
+    private ?float $prix = null;
 
-    // Nombre de propriétaires précédents
     #[ORM\Column(type: 'integer')]
-    private int $nombreProprietaires;
+    #[Assert\NotNull(message:"Le nombre de propriétaires est obligatoire")]
+    #[Assert\PositiveOrZero(message:"Le nombre de propriétaires doit être positif ou nul")]
+    private ?int $nombreProprietaires = null;
 
-    // Cylindrée (ex : 2.0L)
     #[ORM\Column(length: 50)]
-    private string $cylindree;
+    #[Assert\NotBlank(message:"La cylindrée est obligatoire")]
+    #[Assert\Length(max:50, maxMessage:"La cylindrée ne peut pas dépasser {{ limit }} caractères")]
+    private ?string $cylindree = null;
 
-    // Puissance en chevaux
     #[ORM\Column(type: 'integer')]
-    private int $puissance;
+    #[Assert\NotNull(message:"La puissance est obligatoire")]
+    #[Assert\Positive(message:"La puissance doit être positive")]
+    private ?int $puissance = null;
 
-    // Type de carburant (Essence, Diesel, Hybride...)
     #[ORM\Column(length: 50)]
-    private string $carburant;
+    #[Assert\NotBlank(message:"Le carburant est obligatoire")]
+    #[Assert\Choice(choices:["Essence","Diesel","Hybride","Électrique"], message:"Le carburant doit être l'un des suivants : Essence, Diesel, Hybride, Électrique")]
+    private ?string $carburant = null;
 
-    // Année de mise en circulation
     #[ORM\Column(type: 'integer')]
-    private int $anneeMiseEnCirculation;
+    #[Assert\NotNull(message:"L'année de mise en circulation est obligatoire")]
+    #[Assert\Range(min:1900, max:2100, notInRangeMessage:"L'année doit être comprise entre {{ min }} et {{ max }}")]
+    private ?int $anneeMiseEnCirculation = null;
 
-    // Transmission (Manuelle / Automatique)
     #[ORM\Column(length: 50)]
-    private string $transmission;
+    #[Assert\NotBlank(message:"La transmission est obligatoire")]
+    #[Assert\Choice(choices:["Manuelle","Automatique"], message:"La transmission doit être Manuelle ou Automatique")]
+    private ?string $transmission = null;
 
-    // Description du véhicule
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\Length(min:10, max:1000, minMessage:"La description doit faire au moins {{ limit }} caractères", maxMessage:"La description ne peut pas dépasser {{ limit }} caractères")]
     private ?string $description = null;
 
-    // Options (GPS, Climatisation, etc.)
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\Length(max:500, maxMessage:"Les options ne peuvent pas dépasser {{ limit }} caractères")]
     private ?string $options = null;
 
-    // Image de couverture
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageCouverture = null;
 
@@ -71,6 +81,7 @@ class Voiture
      * @var Collection<int, VoitureImage>
      */
     #[ORM\OneToMany(targetEntity: VoitureImage::class, mappedBy: 'voiture', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Assert\Valid()]
     private Collection $voitureImages;
 
     public function __construct()
@@ -85,111 +96,111 @@ class Voiture
         return $this->id;
     }
 
-    public function getMarque(): string
+    public function getMarque(): ?string
     {
         return $this->marque;
     }
 
-    public function setMarque(string $marque): self
+    public function setMarque(?string $marque): self
     {
         $this->marque = $marque;
         return $this;
     }
 
-    public function getModele(): string
+    public function getModele(): ?string
     {
         return $this->modele;
     }
 
-    public function setModele(string $modele): self
+    public function setModele(?string $modele): self
     {
         $this->modele = $modele;
         return $this;
     }
 
-    public function getKilometrage(): int
+    public function getKilometrage(): ?int
     {
         return $this->kilometrage;
     }
 
-    public function setKilometrage(int $kilometrage): self
+    public function setKilometrage(?int $kilometrage): self
     {
         $this->kilometrage = $kilometrage;
         return $this;
     }
 
-    public function getPrix(): float
+    public function getPrix(): ?float
     {
         return $this->prix;
     }
 
-    public function setPrix(float $prix): self
+    public function setPrix(?float $prix): self
     {
         $this->prix = $prix;
         return $this;
     }
 
-    public function getNombreProprietaires(): int
+    public function getNombreProprietaires(): ?int
     {
         return $this->nombreProprietaires;
     }
 
-    public function setNombreProprietaires(int $nombreProprietaires): self
+    public function setNombreProprietaires(?int $nombreProprietaires): self
     {
         $this->nombreProprietaires = $nombreProprietaires;
         return $this;
     }
 
-    public function getCylindree(): string
+    public function getCylindree(): ?string
     {
         return $this->cylindree;
     }
 
-    public function setCylindree(string $cylindree): self
+    public function setCylindree(?string $cylindree): self
     {
         $this->cylindree = $cylindree;
         return $this;
     }
 
-    public function getPuissance(): int
+    public function getPuissance(): ?int
     {
         return $this->puissance;
     }
 
-    public function setPuissance(int $puissance): self
+    public function setPuissance(?int $puissance): self
     {
         $this->puissance = $puissance;
         return $this;
     }
 
-    public function getCarburant(): string
+    public function getCarburant(): ?string
     {
         return $this->carburant;
     }
 
-    public function setCarburant(string $carburant): self
+    public function setCarburant(?string $carburant): self
     {
         $this->carburant = $carburant;
         return $this;
     }
 
-    public function getAnneeMiseEnCirculation(): int
+    public function getAnneeMiseEnCirculation(): ?int
     {
         return $this->anneeMiseEnCirculation;
     }
 
-    public function setAnneeMiseEnCirculation(int $anneeMiseEnCirculation): self
+    public function setAnneeMiseEnCirculation(?int $anneeMiseEnCirculation): self
     {
         $this->anneeMiseEnCirculation = $anneeMiseEnCirculation;
         return $this;
     }
 
-    public function getTransmission(): string
+    public function getTransmission(): ?string
     {
         return $this->transmission;
     }
 
-    public function setTransmission(string $transmission): self
+    public function setTransmission(?string $transmission): self
     {
         $this->transmission = $transmission;
         return $this;
@@ -242,19 +253,16 @@ class Voiture
             $this->voitureImages->add($voitureImage);
             $voitureImage->setVoiture($this);
         }
-
         return $this;
     }
 
     public function removeVoitureImage(VoitureImage $voitureImage): static
     {
         if ($this->voitureImages->removeElement($voitureImage)) {
-            // set the owning side to null (unless already changed)
             if ($voitureImage->getVoiture() === $this) {
                 $voitureImage->setVoiture(null);
             }
         }
-
         return $this;
     }
 }

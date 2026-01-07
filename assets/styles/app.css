@@ -128,6 +128,9 @@ small {
 .mb-20 {
     margin-bottom: 20px;
 }
+.mt-20 {
+    margin-top: 20px;
+}
 .mr-50 {
     margin-right: 50px;
 }
@@ -196,6 +199,33 @@ small {
     color: var(--primary);
     background-color: white;
 }
+#add-image {
+    margin-bottom: 20px;
+    background-color: var(--primary-light);
+    color: var(--primary);
+}
+
+#add-image:hover {
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+button.btn-danger {
+    background-color: var(--warning);
+    color: white;
+}
+
+button.btn-primary {
+    background-color: var(--primary);
+    color: var(--color-primary);
+}
+
+button.btn-primary:hover,
+button.btn-danger:hover {
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
 .block {
     padding: 20px;
     border-radius: var(--border-radius);
@@ -322,4 +352,61 @@ footer {
 }
 .rating-down {
     color: var(--warning);
+}
+
+/* Galerie d'images */
+#voiture_voitureImages .form-group {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+#voiture_voitureImages img {
+    width: 150px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    margin-top: 5px;
+    display: block;
+}
+
+#voiture_voitureImages button[data-action="delete"] {
+    margin-top: 5px;
+    font-size: 12px;
+    padding: 5px 10px;
+    background-color: var(--warning);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+}
+
+#voiture_voitureImages button[data-action="delete"]:hover {
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.form-row input,
+.form-row textarea,
+#voiture_voitureImages input[type="file"] {
+    width: 100%;
+    font-family: var(--font-family);
+    border: 0;
+    border-radius: var(--border-radius);
+    padding: 10px 15px;
+    background-color: var(--gray-light);
+    margin-bottom: 10px;
+}
+
+.form-row label {
+    font-weight: var(--font-weight-semi-bold);
+    color: var(--color-dark);
+}
+.edit-voiture-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.edit-voiture-container h1 {
+    margin-bottom: 20px;
 }

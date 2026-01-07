@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier {{ voiture.marque }} {{ voiture.modele }}{% endblock %}
+
+{% block body %}
+<div class="edit-voiture-container block">
+    <h1>Modifier {{ voiture.marque }} {{ voiture.modele }}</h1>
+
+    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+
+        {# Champs principaux de la voiture #}
+        {{ form_row(form.marque) }}
+        {{ form_row(form.modele) }}
+        {{ form_row(form.kilometrage) }}
+        {{ form_row(form.prix) }}
+        {{ form_row(form.nombreProprietaires) }}
+        {{ form_row(form.cylindree) }}
+        {{ form_row(form.puissance) }}
+        {{ form_row(form.carburant) }}
+        {{ form_row(form.anneeMiseEnCirculation) }}
+        {{ form_row(form.transmission) }}
+        {{ form_row(form.description) }}
+        {{ form_row(form.options) }}
+        {{ form_row(form.imageCouverture) }}
+
+        {# Galerie d'images existantes #}
+        <h3>Galerie d'images</h3>
+        <div id="voiture_voitureImages" data-prototype="{{ form_widget(form.voitureImages.vars.prototype)|e('html_attr') }}">
+            {% for imageForm in form.voitureImages %}
+                <div class="form-group" id="voiture_image_{{ loop.index }}">
+                    {{ form_row(imageForm.imageName) }}
+                    {{ form_row(imageForm.caption) }}
+                    {% if imageForm.vars.data.imageName %}
+                        <img src="{{ asset('uploads/voitures/' ~ imageForm.vars.data.imageName) }}" alt="Image {{ loop.index }}" />
+                    {% endif %}
+                    <button type="button" data-action="delete" data-target="#voiture_image_{{ loop.index }}">Supprimer</button>
+                </div>
+            {% endfor %}
+        </div>
+
+        <input type="hidden" id="widgets-counter" value="{{ form.voitureImages|length }}">
+        <button type="button" id="add-image" class="btn btn-secondary mb-3">Ajouter une image</button>
+
+        {# Boutons d'action #}
+        <div class="d-flex justify-content-between">
+            <button class="btn btn-primary mt-10">Enregistrer les modifications</button>
+            <a href="{{ path('voiture_show', {'id': voiture.id}) }}" class="btn btn-primary btn-small">Retour</a>
+        </div>
+
+    {{ form_end(form) }}
+
+    {# Supprimer la voiture entière #}
+    <form method="post" action="{{ path('admin_voiture_delete', {'id': voiture.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cette voiture ?');" class="mt-20">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ voiture.id) }}">
+        <button type="submit" class="btn btn-danger mt-20">Supprimer l'annonce</button>
+    </form>
+</div>
+
+{# JS pour ajouter/supprimer dynamiquement des images #}
+<script>
+const addImage = document.querySelector('#add-image');
+const widgetCounter = document.querySelector("#widgets-counter");
+const voitureImages = document.querySelector("#voiture_voitureImages");
+
+addImage.addEventListener('click', () => {
+    const index = +widgetCounter.value;
+    const prototype = voitureImages.dataset.prototype.replace(/__name__/g, index);
+    voitureImages.insertAdjacentHTML('beforeend', prototype);
+    widgetCounter.value = index + 1;
+    handleDeleteButtons();
+});
+
+const handleDeleteButtons = () => {
+    document.querySelectorAll('button[data-action="delete"]').forEach(button => {
+        button.removeEventListener('click', button._listener);
+        button._listener = () => {
+            const target = button.dataset.target;
+            document.querySelector(target)?.remove();
+        };
+        button.addEventListener('click', button._listener);
+    });
+};
+
+handleDeleteButtons();
+</script>
+
+{% endblock %}

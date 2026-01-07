@@ -1,18 +1,22 @@
 <header class="d-flex flex-row-nowrap justify-content-center p-20">
     <div class="content flex-fill d-flex flex-row-nowrap justify-content-between align-items-center">
-        <a href="#" class="header-logo">
+        <a href="{{path('home')}}" class="header-logo">
             <i class="fa-solid fa-car"></i> Garage
         </a>
         <div class="header-search p-10 flex-fill">
             <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" name="#" id="#">
         </div>
-        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            <a href="{{ path('logout')}}">Déconnexion</a>
+        <div>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <a href="{{ path('logout')}}" class="mr-10">Déconnexion</a>
+            <a href="{{ path('admin_voiture_new')}}" class="btn btn-primary-stroke">Ajout nouvelle voiture</a>
         {% else %}
         <div>
             <a href="{{ path('login')}}" class="btn btn-primary-stroke">Connexion</a>
         </div>
+        </div>
+        
         {% endif %}
         
     </div>

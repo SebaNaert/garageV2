@@ -85,5 +85,8 @@
 </div>
 
 <a href="{{ path('voiture_index') }}" class="btn btn-primary">Retour au showroom</a>
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <a href="{{ path('admin_voiture_edit', {'id': voiture.id})  }}" class="btn btn-primary">Edit</a>
+{% endif %}
 
 {% endblock %}

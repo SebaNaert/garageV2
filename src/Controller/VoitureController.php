@@ -10,6 +10,12 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class VoitureController extends AbstractController
 {
+    /**
+     * Affiche la liste de toutes les voitures.
+     *
+     * @param VoitureRepository $repo Repository pour accéder aux voitures
+     * @return Response Réponse HTTP avec le rendu du template 'voiture/index.html.twig'
+     */
     #[Route('/voitures', name: 'voiture_index')]
     public function index(VoitureRepository $repo): Response
     {
@@ -18,7 +24,12 @@ final class VoitureController extends AbstractController
             'voitures' => $voitures,
         ]);
     }
-
+    /**
+     * Affiche les détails d'une voiture spécifique.
+     *
+     * @param Voiture $voiture Entité Voiture récupérée automatiquement par ParamConverter
+     * @return Response Réponse HTTP avec le rendu du template 'voiture/show.html.twig'
+     */
     #[Route('/voitures/{id}', name: 'voiture_show')]
     public function show(Voiture $voiture): Response
     {

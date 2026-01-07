@@ -9,6 +9,13 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+    /**
+     * Affiche le formulaire de connexion et gère les erreurs de login.
+     * Redirige vers la liste des voitures si l'utilisateur est déjà connecté.
+     *
+     * @param AuthenticationUtils $authenticationUtils Service fournissant l'état de l'authentification
+     * @return Response Réponse HTTP avec le formulaire de connexion
+     */
     #[Route(path: '/login', name: 'login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -25,10 +32,13 @@ class SecurityController extends AbstractController
             'error' => $error
         ]);
     }
-
+    /**
+     * Déconnecte l'utilisateur.
+     *
+     * @return void
+     */
     #[Route(path: '/logout', name: 'logout')]
     public function logout(): void
     {
-        // Symfony gère le logout automatiquement, pas besoin de code ici
     }
 }

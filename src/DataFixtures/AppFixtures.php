@@ -53,14 +53,13 @@ class AppFixtures extends Fixture
             for ($j = 0; $j < 3; $j++) {
                 $image = new VoitureImage();
                 $image->setImageName("https://picsum.photos/id/".(200+$i*3+$j)."/400/250");
-                $voiture->addVoitureImage($image); // Doctrine persistera automatiquement
+                $voiture->addVoitureImage($image);
             }
 
-            $manager->persist($voiture); // suffit, plus besoin de persist sur chaque image
+            $manager->persist($voiture);
         }
 
         $manager->flush();
 
-        echo "✅ 12 voitures avec galerie ont été générées\n";
     }
 }
