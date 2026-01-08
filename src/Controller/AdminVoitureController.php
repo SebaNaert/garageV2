@@ -134,6 +134,8 @@ final class AdminVoitureController extends AbstractController
             // --- gérer galerie ---
             foreach ($form->get('voitureImages') as $imageForm) {
                 $imageFile = $imageForm->get('imageName')->getData();
+                $imageEntity = $imageForm->getData();
+
                 if ($imageFile) {
                     $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
                     $safeFilename = $slugger->slug($originalFilename);
@@ -144,10 +146,15 @@ final class AdminVoitureController extends AbstractController
                         $newFilename
                     );
 
-                    $imageEntity = $imageForm->getData();
                     $imageEntity->setImageName($newFilename);
                     $imageEntity->setVoiture($voiture);
+                } else {
+                    if(!$imageEntity->getImageName())
+                    {
+                        $voiture->removeVoitureImage($imageEntity);
+                    }
                 }
+                
             }
 
             $em->persist($voiture);
